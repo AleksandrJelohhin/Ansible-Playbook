@@ -1,23 +1,23 @@
-#Ansible Configuration
+# Ansible Configuration
 
-###Install winRM on Linux
+### Install winRM on Linux
 ```
 sudo apt install python3-pip
 pip install "pywinrm>=0.3.0"
 ```
 Kerberos
 ```
-# Upgrade PIP to latest version
+#Upgrade PIP to latest version
 sudo pip3 install --upgrade pip
 
-# Install Kerberos
+#Install Kerberos
 sudo apt-get install python-dev libkrb5-dev krb5-user
 
 # Install pywinrm with kerberos with pip3
 pip3 install pywinrm
 pip3 install pywinrm[kerberos]
 ```
-###KerberosHost config for kerberos Authentication
+### KerberosHost config for kerberos Authentication
 ```
 sudo nano /etc/krb5.conf
 ```
@@ -43,7 +43,7 @@ Init your user ticket
 ```
 kinit username@MY.DOMAIN.COM
 ```
-###Ansible.cfg
+### Ansible.cfg
 ```
 sudo nano /etc/ansible/ansible.cfg
 ```
@@ -59,7 +59,7 @@ touch hosts
 ```
 Open Hosts file and add next strings
 
-###Hosts file 
+### Hosts file 
 ```
 [webservers]
 testides.indicomain.local
@@ -77,7 +77,7 @@ ansible_winrm_transport=ntlm
 #ansible_become=false
 #ansible_become_method: runas
 ```
-###Ping all Windows Clients
+### Ping all Windows Clients
 ```
 ansible all -m win_ping
 ```
