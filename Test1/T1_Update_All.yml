@@ -1,0 +1,63 @@
+# use files parameter to use multiple docker-compose.yml files
+- name: Docker Compose All Containers
+  hosts: 
+    - testides3.indicomain.local
+  tasks:
+  #All containers 
+  - name: Download ":latest" All
+    win_shell: docker pull indicobuilds/portal-internal-dev:latest
+    win_shell: docker pull indicobuilds/portal-external-dev:latest
+
+    win_shell: docker pull indicobuilds/helper-services-dev:latest
+
+    win_shell: docker pull indicobuilds/conversion-services-dev:latest
+    win_shell: docker pull indicobuilds/burning-service-dev:latest
+    win_shell: docker pull indicobuilds/publishing-service-dev:latest
+    win_shell: docker pull indicobuilds/integrator-service-dev:latest
+    win_shell: docker pull indicobuilds/media-service-dev:latest
+       
+  - name: Stop current containers
+    win_shell: docker container stop portal-internal portal-external helper-services conversion-services burning-service publishing-service integrator-service media-service 
+    #win_shell: docker container stop portal-external
+
+    #win_shell: docker container stop helper-services
+
+    #win_shell: docker container stop conversion-services
+    #win_shell: docker container stop burning-service
+    #win_shell: docker container stop publishing-service
+    #win_shell: docker container stop integrator-service
+    #win_shell: docker container stop media-service
+    ignore_errors: true #ignore if container is not running
+    
+  - name: Compose Portal Internal
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.portal.internal.yml --env-file=portal.internal.env up -d
+  - name: Compose Portal External
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.portal.external.yml --env-file=portal.external.env up -d
+
+  - name: Compose Helper Services
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.helper.services.yml --env-file=helper.services.env up -d
+
+  - name: Compose Conversion Services
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.conversion.services.yml --env-file=conversion.services.env up -d
+  - name: Compose Burning Service
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.burning.service.yml --env-file=burning.service.env up -d
+  - name: Compose Helper Service
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.publishing.service.yml --env-file=publishing.service.env up -d
+  - name: Compose Integrator Service
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.integrator.service.yml --env-file=integrator.service.env up -d
+  - name: Compose Media Service
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.media.service.yml --env-file=media.service.env up -d
+
+
+  - name: New Container Composed
+    win_shell: docker ps -f "name=helper-services" -f status=running -f health=starting
+    register: result
+    
+  - assert:
+        that:
+          - "'helper-services' in result.stdout"
+
+  - name: System Prune
+    win_shell: docker system prune -f
+
+
