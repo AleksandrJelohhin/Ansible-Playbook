@@ -5,7 +5,7 @@
 sudo apt install python3-pip
 pip install "pywinrm>=0.3.0"
 ```
-Kerberos
+### Kerberos
 ```
 #Upgrade PIP to latest version
 sudo pip3 install --upgrade pip
@@ -17,7 +17,7 @@ sudo apt-get install python-dev libkrb5-dev krb5-user
 pip3 install pywinrm
 pip3 install pywinrm[kerberos]
 ```
-### KerberosHost config for kerberos Authentication
+# KerberosHost config for kerberos Authentication
 ```
 sudo nano /etc/krb5.conf
 ```
@@ -62,8 +62,8 @@ Open Hosts file and add next strings
 ### Hosts file 
 ```
 [webservers]
-testides.indicomain.local
-testides3.indicomain.local
+host1.domain_name.local
+host2.domain_name.local
 
 [webservers:vars]
 ansible_user=*LOGIN* #Domain must be written in UPPERCASE
