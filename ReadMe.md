@@ -1,11 +1,11 @@
 # Ansible Configuration
 
-### Install winRM on Linux
+## Install winRM on Linux
 ```
 sudo apt install python3-pip
 pip install "pywinrm>=0.3.0"
 ```
-### Kerberos
+## Kerberos
 ```
 #Upgrade PIP to latest version
 sudo pip3 install --upgrade pip
@@ -59,7 +59,7 @@ touch hosts
 ```
 Open Hosts file and add next strings
 
-### Hosts file 
+# Hosts file 
 ```
 [webservers]
 host1.domain_name.local
