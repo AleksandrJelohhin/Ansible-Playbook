@@ -1,0 +1,13 @@
+- name: 'select from SQL server DB'
+  hosts: 
+    - testsqlsrv.indicomain.local 
+  tasks:
+  - name: Simple select query to acme db
+    win_shell: sqlcmd -S testsqlsrv\T_2016_6 -U sa -P indico080108 -Q "use IDES_DB SELECT [value] FROM dbo.Settings WHERE [key] = 'FileStoragePath'"
+    register: response
+
+  - set_fact:
+     ids: "{{ response.stdout}}"
+
+  - debug:
+      msg: response.stdout

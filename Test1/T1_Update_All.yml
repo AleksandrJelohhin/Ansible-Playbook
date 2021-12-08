@@ -5,16 +5,17 @@
   tasks:
 #All containers 
   - name: Download ":latest" All
-    win_shell: docker pull indicobuilds/portal-internal-dev:latest
-    win_shell: docker pull indicobuilds/portal-external-dev:latest
+    win_shell: |
+      docker pull indicobuilds/portal-internal-dev:latest 
+      docker pull indicobuilds/portal-external-dev:latest
 
-    win_shell: docker pull indicobuilds/helper-services-dev:latest
+      docker pull indicobuilds/helper-services-dev:latest
 
-    win_shell: docker pull indicobuilds/conversion-services-dev:latest
-    win_shell: docker pull indicobuilds/burning-service-dev:latest
-    win_shell: docker pull indicobuilds/publishing-service-dev:latest
-    win_shell: docker pull indicobuilds/integrator-service-dev:latest
-    win_shell: docker pull indicobuilds/media-service-dev:latest
+      docker pull indicobuilds/conversion-services-dev:latest
+      docker pull indicobuilds/burning-service-dev:latest
+      docker pull indicobuilds/publishing-service-dev:latest
+      docker pull indicobuilds/integrator-service-dev:latest
+      docker pull indicobuilds/media-service-dev:latest
 
 #Stop Container   
   - name: Stop current containers
