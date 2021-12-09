@@ -4,10 +4,32 @@
   tasks:
   - name: Simple select query to acme db
     win_shell: sqlcmd -S testsqlsrv\T_2016_6 -U sa -P indico080108 -Q "use IDES_DB SELECT [value] FROM dbo.Settings WHERE [key] = 'FileStoragePath'"
-    register: response
+    register: result
+    #delegate_to: testsqlsrv.indicomain.local 
+
+  #- debug:
+  #    var: result.stdout 
 
   - set_fact:
-     ids: "{{ response.stdout}}"
+      var: "{{ result.stdout | regex_search(path_regexp)}}"  
+    vars:
+      path_regexp: '[a-zA-Z\d\+]{2,}\D+\d\D+[a-z][\w]'
+      
 
-  - debug:
-      msg: response.stdout
+      
+  #- set_fact:     
+  #    var2: "{{var | regex_replace(slash_regexp)}}"    
+  #  vars:
+  #      slash_regexp: '\W{2}'
+
+  - name: Remove folder
+    ansible.windows.win_powershell:
+      script: |
+        $path ="\\r2d2\\Repository6\\Default" -replace '\W{2}', '\'
+        $path
+        cd \\$path | dir
+        
+      #Remove-Item -Path \test -Force -Recurse
+    #delegate_to: testides.indicomain.local
+
+     # [\W]{1}[a-zA-Z\d\+]{2,}\D+\d\D+[a-z][\w]
