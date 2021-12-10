@@ -1,0 +1,18 @@
+- name: 'select from SQL server DB'
+  hosts: 
+    - HOST_NAME
+  tasks:
+  - name: Remove folder
+    ansible.windows.win_powershell: #CHECKOUT SCRIPT--USERNAME / PASSWORD /DB_NAME AND ETC MUST BE DEFFINED
+      chdir : C:\
+      script: |
+        net use * /del /y 
+        $file_path = sqlcmd -S HOST_NAME\INSTANCE_NAME -U *LOGIN* -P *PASSWORD* -Q "use DB_NAME SELECT [value] FROM dbo.Settings WHERE [key] = 'FileStoragePath'"
+        $pp0 = $file_path -match '[a-zA-Z\d\+]{2,}\D+\d\D+[a-z][\w]'
+        $pp1 = $pp0.Trim() -replace '\W{2}', '\'
+        net use z: \$pp1 /user:DOMAIN_NAME\USER_NAME PASSWORD
+        Remove-Item -LiteralPath "z:/test" -Force -Recurse
+        net use * /del /y
+      #
+
+     # [\W]{1}[a-zA-Z\d\+]{2,}\D+\d\D+[a-z][\w]
