@@ -1,4 +1,4 @@
-- name: 'select from SQL server DB'
+- name: 'Get FilePath from DB and Delete Folder from it'
   hosts: 
     - HOST_NAME
   tasks:
