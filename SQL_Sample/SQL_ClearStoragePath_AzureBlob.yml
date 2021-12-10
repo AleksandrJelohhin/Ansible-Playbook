@@ -1,0 +1,11 @@
+- name: 'Get FilePath from DB and Delete Folder from it'
+  hosts: 
+    - localhost
+  tasks:
+  - name: Remove Blob
+    azure_rm_storageblob:
+      storage_account_name : 
+      container : 
+      secret : 
+      resource_group: DefaultResourceGroup-WEU
+      state: absent

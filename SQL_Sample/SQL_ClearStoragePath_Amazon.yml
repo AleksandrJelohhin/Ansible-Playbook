@@ -1,0 +1,22 @@
+- name: 'Get FilePath from DB and Delete Folder from it'
+  hosts: 
+    - localhost
+  tasks:
+  - name: Remove Buket
+    amazon.aws.aws_s3:
+      bucket: 
+      region : 
+      aws_access_key: 
+      aws_secret_key: 
+      mode: delete
+    delegate_to: localhost
+
+  - name: Create Buket
+    amazon.aws.aws_s3:
+      bucket: 
+      region : 
+      aws_access_key: 
+      aws_secret_key: 
+      mode: create
+      permission: private
+      object: Default/
