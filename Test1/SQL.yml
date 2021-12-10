@@ -2,18 +2,18 @@
   hosts: 
     - testsqlsrv.indicomain.local 
   tasks:
-  - name: Simple select query to acme db
-    win_shell: sqlcmd -S testsqlsrv\T_2016_6 -U sa -P indico080108 -Q "use IDES_DB SELECT [value] FROM dbo.Settings WHERE [key] = 'FileStoragePath'"
-    register: result
+  #- name: Simple select query to acme db
+  #  win_shell: sqlcmd -S testsqlsrv\T_2016_6 -U sa -P indico080108 -Q "use IDES_DB SELECT [value] FROM dbo.Settings WHERE [key] = 'FileStoragePath'"
+  #  register: result
     #delegate_to: testsqlsrv.indicomain.local 
 
   #- debug:
   #    var: result.stdout 
 
-  - set_fact:
-      var: "{{ result.stdout | regex_search(path_regexp)}}"  
-    vars:
-      path_regexp: '[a-zA-Z\d\+]{2,}\D+\d\D+[a-z][\w]'
+  #- set_fact:
+  #    var: "{{ result.stdout | regex_search(path_regexp)}}"  
+  #  vars:
+  #    path_regexp: '[a-zA-Z\d\+]{2,}\D+\d\D+[a-z][\w]'
       
 
       
@@ -24,11 +24,18 @@
 
   - name: Remove folder
     ansible.windows.win_powershell:
+      chdir : C:\
       script: |
-        $path ="\\r2d2\\Repository6\\Default" -replace '\W{2}', '\'
-        $path
-        cd \\$path | dir
-        
+        net use * /del /y
+        $file_path = sqlcmd -S testsqlsrv\T_2016_6 -U sa -P indico080108 -Q "use IDES_DB SELECT [value] FROM dbo.Settings WHERE [key] = 'FileStoragePath'"
+        $pp0 = $file_path -match '[a-zA-Z\d\+]{2,}\D+\d\D+[a-z][\w]'
+        $pp1 = $pp0.Trim() -replace '\W{2}', '\'
+        net use z: \$pp1 /user:indicomain.local\admin indico080108
+        Remove-Item -LiteralPath "z:/test" -Force -Recurse
+        net use * /del /y
+      #$path
+      #cd $pp0
+    #dir
       #Remove-Item -Path \test -Force -Recurse
     #delegate_to: testides.indicomain.local
 
