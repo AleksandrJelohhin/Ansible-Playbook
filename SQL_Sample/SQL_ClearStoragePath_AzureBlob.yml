@@ -1,11 +1,10 @@
-- name: 'Get FilePath from DB and Delete Folder from it'
+- name: 'Delete Folder from Azure'
   hosts: 
     - localhost
+
   tasks:
-  - name: Remove Blob
-    azure_rm_storageblob:
-      storage_account_name : 
-      container : 
-      secret : 
-      resource_group: DefaultResourceGroup-WEU
-      state: absent
+  - name: Remove folder
+    ansible.windows.win_powershell:
+      chdir : C:\
+      script: |
+        az storage fs directory delete --file-system {{container_name}}} --name {{Directory_Name}} --account-key {{key}} --account-name {{accont_name}}
