@@ -8,3 +8,4 @@
       chdir : C:\
       script: |
         az storage fs directory delete --file-system {{container_name}}} --name {{Directory_Name}} --account-key {{key}} --account-name {{accont_name}}
+        
