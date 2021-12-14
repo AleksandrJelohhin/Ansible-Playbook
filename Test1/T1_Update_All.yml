@@ -1,7 +1,7 @@
 # use files parameter to use multiple docker-compose.yml files
 - name: Docker Compose All Containers
   hosts: 
-    - testides3.indicomain.local
+    - testides.indicomain.local
   tasks:
 #All containers 
   - name: Download ":latest" All
