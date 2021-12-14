@@ -7,7 +7,7 @@
       chdir : C:\
       script: |
         net use * /del /y 
-        $file_path = sqlcmd -S HOST_NAME\INSTANCE_NAME -U *LOGIN* -P *PASSWORD* -Q "use DB_NAME SELECT [value] FROM dbo.Settings WHERE [key] = 'FileStoragePath'"
+        $file_path = sqlcmd -S HOST_NAME\INSTANCE_NAME -U {{*LOGIN*}} -P {{*PASSWORD*}} -Q "use DB_NAME SELECT [value] FROM dbo.Settings WHERE [key] = 'FileStoragePath'"
         $pp0 = $file_path -match '[a-zA-Z\d\+]{2,}\D+\d\D+[a-z][\w]'
         $pp1 = $pp0.Trim() -replace '\W{2}', '\'
         net use z: \$pp1 /user:DOMAIN_NAME\USER_NAME PASSWORD

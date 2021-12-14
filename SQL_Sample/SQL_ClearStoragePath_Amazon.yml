@@ -4,19 +4,19 @@
   tasks:
   - name: Remove Buket
     amazon.aws.aws_s3:
-      bucket: 
-      region : 
-      aws_access_key: 
-      aws_secret_key: 
+      bucket: {{bucket}}
+      region : {{region}}
+      aws_access_key: {{key}}
+      aws_secret_key: {{secret_key}}
       mode: delete
     delegate_to: localhost
 
   - name: Create Buket
     amazon.aws.aws_s3:
-      bucket: 
-      region : 
-      aws_access_key: 
-      aws_secret_key: 
+      bucket: {{bucket}}
+      region : {{region}}
+      aws_access_key: {{key}}
+      aws_secret_key: {{secret_key}} 
       mode: create
       permission: private
       object: Default/
