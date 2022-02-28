@@ -1,0 +1,25 @@
+# use files parameter to use multiple docker-compose.yml files
+- name: Docker Compose Container
+  hosts: 
+    - testides3.indicomain.local
+  tasks:
+  #Burning-Service
+  - name: Download ":latest" Burning-Service
+    win_shell: docker pull indicobuilds/burning-service-dev:latest
+        
+  - name: Stop current Burning-Service
+    win_shell: docker container stop burning-service
+    ignore_errors: true #ignore if container is not running
+    
+  - name: Compose new Burning-Service
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.burning.service.yml --env-file=burning.service.env up -d
+
+  - name: New Container Composed
+    win_shell: docker ps -f "name=burning-service" -f status=running -f health=starting
+    register: result
+    
+  - assert:
+        that:
+          - "'burning-service' in result.stdout"
+
+

@@ -1,0 +1,26 @@
+# use files parameter to use multiple docker-compose.yml files
+- name: Docker Compose Container
+  hosts: 
+    - testides.indicomain.local
+    - testides3.indicomain.local
+  tasks:
+  #Conversion-Services
+  - name: Download ":latest" Conversion-Services
+    win_shell: docker pull indicobuilds/conversion-services-dev:latest
+        
+  - name: Stop current Conversion-Services
+    win_shell: docker container stop conversion-services 
+    ignore_errors: true #ignore if container is not running
+    
+  - name: Compose new Conversion-services
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.conversion.services.yml --env-file=conversion.services.env up -d
+
+  - name: New Container Composed
+    win_shell: docker ps -f "name=conversion-services" -f status=running -f health=starting
+    register: result
+    
+  - assert:
+        that:
+          - "'conversion-services' in result.stdout"
+
+

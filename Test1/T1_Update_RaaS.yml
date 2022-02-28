@@ -1,0 +1,25 @@
+# use files parameter to use multiple docker-compose.yml files
+- name: Docker Compose Container
+  hosts: 
+    - testides.indicomain.local
+  tasks:
+  #RaaS
+  - name: Download ":latest" RaaS
+    win_shell: docker pull indicobuilds/raas-dev:latest
+        
+  - name: Stop current RaaS
+    win_shell: docker container stop raas
+    ignore_errors: true #ignore if container is not running
+    
+  - name: Compose new RaaS
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.raas.yml --env-file=raas.env up -d
+
+  - name: New Container Composed
+    win_shell: docker ps -f "name=raas" -f status=running -f health=starting
+    register: result
+    
+  - assert:
+        that:
+          - "'raas' in result.stdout"
+
+

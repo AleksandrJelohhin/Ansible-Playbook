@@ -2,6 +2,7 @@
 - name: Docker Compose All Containers
   hosts: 
     - testides.indicomain.local
+    - testides3.indicomain.local
   tasks:
 #All containers 
   - name: Download ":latest" All
@@ -127,7 +128,8 @@
     
   - assert:
         that:
-          - "'raas' in result.stdout"        
+          - "'raas' in result.stdout"
+        
 #System Prune
   - name: System Prune
     win_shell: docker system prune -f

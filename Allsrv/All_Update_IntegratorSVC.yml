@@ -1,0 +1,26 @@
+# use files parameter to use multiple docker-compose.yml files
+- name: Docker Compose Container
+  hosts: 
+    - testides.indicomain.local
+    - testides3.indicomain.local
+  tasks:
+  #Integrator-Service
+  - name: Download ":latest" Integrator-Service
+    win_shell: docker pull indicobuilds/integrator-service-dev:latest
+        
+  - name: Stop current Integrator-Service
+    win_shell: docker container stop integrator-service
+    ignore_errors: true #ignore if container is not running
+    
+  - name: Compose new Integrator-Service
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.integrator.service.yml --env-file=integrator.service.env up -d
+
+  - name: New Container Composed
+    win_shell: docker ps -f "name=integrator-service" -f status=running -f health=starting
+    register: result
+    
+  - assert:
+        that:
+          - "'integrator-service' in result.stdout"
+
+

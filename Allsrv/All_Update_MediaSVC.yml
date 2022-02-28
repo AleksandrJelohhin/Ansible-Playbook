@@ -1,0 +1,26 @@
+# use files parameter to use multiple docker-compose.yml files
+- name: Docker Compose Container
+  hosts: 
+    - testides.indicomain.local
+    - testides3.indicomain.local
+  tasks:
+  #Media-Service
+  - name: Download ":latest" Media-Service
+    win_shell: docker pull indicobuilds/media-service-dev:latest
+        
+  - name: Stop current Media-Service
+    win_shell: docker container stop media-service
+    ignore_errors: true #ignore if container is not running
+    
+  - name: Compose new Media-Service
+    win_shell: cd C:\Docker\All | docker-compose -f docker-compose.media.service.yml --env-file=media.service.env up -d
+
+  - name: New Container Composed
+    win_shell: docker ps -f "name=media-service" -f status=running -f health=starting
+    register: result
+    
+  - assert:
+        that:
+          - "'media-service' in result.stdout"
+
+
